@@ -5,32 +5,13 @@ import (
 	"log"
 	"os"
 
+	"github.com/enriquecr01/aubert-go/routes"
 	"github.com/gin-gonic/gin"
-	// "github.com/gorilla/mux"
 )
-
-func homeHandle(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "Hello me llamo Aubert!",
-	})
-}
-
-func exampleHandle(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "Salut ç'est un exemple",
-	})
-}
 
 func main() {
 	// fmt.Println("Server initialized")
 	StartGin()
-
-	// r := mux.NewRouter()
-
-	// r.HandleFunc("/", homeHandle)
-	// r.HandleFunc("/example", exampleHandle)
-
-	// http.ListenAndServe(":80", r)
 
 }
 
@@ -39,8 +20,10 @@ func StartGin() {
 	gin.SetMode(gin.ReleaseMode)
 
 	router := gin.New()
-	router.GET("/", homeHandle)
-	router.GET("/example", exampleHandle)
+	router.GET("/", routes.HomeHandle)
+	router.GET("/example", routes.ExampleHandle)
+	router.GET("/password/search", routes.SearchPasswords)
+	router.POST("/password/add", routes.AddPassword)
 
 	port := os.Getenv("PORT")
 	fmt.Println("Port", os.Getenv("PORT"))
