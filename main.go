@@ -3,19 +3,22 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
 	// "github.com/gorilla/mux"
 )
 
-func homeHandle(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello me llamo Aubert!"))
+func homeHandle(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"message": "Hello me llamo Aubert!",
+	})
 }
 
-func exampleHandle(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Salut ç'est un exemple"))
+func exampleHandle(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"message": "Salut ç'est un exemple",
+	})
 }
 
 func main() {
@@ -36,11 +39,8 @@ func StartGin() {
 	gin.SetMode(gin.ReleaseMode)
 
 	router := gin.New()
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
+	router.GET("/", homeHandle)
+	router.GET("/example", exampleHandle)
 
 	port := os.Getenv("PORT")
 	fmt.Println("Port", os.Getenv("PORT"))
