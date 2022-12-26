@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -15,6 +16,8 @@ func exampleHandle(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	fmt.Println("Server initialized")
+
 	r := mux.NewRouter()
 
 	r.HandleFunc("/", homeHandle)
