@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/enriquecr01/aubert-go/db"
 	"github.com/enriquecr01/aubert-go/routes"
 	"github.com/gin-gonic/gin"
 )
@@ -12,12 +13,13 @@ import (
 func main() {
 	// fmt.Println("Server initialized")
 	StartGin()
-
 }
 
 // StartGin starts gin web server with setting router.
 func StartGin() {
 	gin.SetMode(gin.ReleaseMode)
+
+	db.DBConnection()
 
 	router := gin.New()
 	router.GET("/", routes.HomeHandle)
