@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	// "github.com/gorilla/mux"
@@ -17,7 +19,8 @@ func exampleHandle(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	fmt.Println("Server initialized")
+	// fmt.Println("Server initialized")
+	StartGin()
 
 	// r := mux.NewRouter()
 
@@ -26,12 +29,26 @@ func main() {
 
 	// http.ListenAndServe(":80", r)
 
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
+}
+
+// StartGin starts gin web server with setting router.
+func StartGin() {
+	gin.SetMode(gin.ReleaseMode)
+
+	router := gin.New()
+	router.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
 		})
 	})
-	r.Run() // listen and serve on 0.0.0.0:8080
 
+	port := os.Getenv("PORT")
+	fmt.Println("Port", os.Getenv("PORT"))
+	if port == "" {
+		port = "8080"
+		fmt.Println("Running in port", 8080)
+	}
+	if err := router.Run(":" + port); err != nil {
+		log.Panicf("error: %s", err)
+	}
 }
