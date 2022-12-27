@@ -7,11 +7,12 @@ import (
 type Secret struct {
 	gorm.Model
 
-	Id       uint
+	ID       uint
 	Name     string
 	URL      string
 	Username string
 	Secret   string
 	Notes    string
 	Color    string
+	UserId   int
 }

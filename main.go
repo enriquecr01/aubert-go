@@ -24,7 +24,8 @@ func StartGin() {
 	router := gin.New()
 	router.GET("/", routes.HomeHandle)
 	router.GET("/example", routes.ExampleHandle)
-	router.GET("/password/search", routes.SearchPasswords)
+	router.GET("/password/search/:userid", routes.GetAllPasswords)
+	router.GET("/password/search/:userid/:term", routes.SearchPasswords)
 	router.POST("/password/add", routes.AddPassword)
 
 	port := os.Getenv("PORT")

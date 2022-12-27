@@ -3,6 +3,8 @@ package db
 import (
 	"log"
 
+	"gorm.io/gorm/logger"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -16,7 +18,9 @@ var database = "thunderk_aubert"
 func DBConnection() {
 	var error error
 	DSN := `thunderk_admin:roaming32@tcp(162.241.60.131:3306)/thunderk_aubert?charset=utf8mb4&parseTime=True&loc=Local`
-	DB, error = gorm.Open(mysql.Open(DSN), &gorm.Config{})
+	DB, error = gorm.Open(mysql.Open(DSN), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	})
 
 	if error != nil {
 		log.Fatal(error)
