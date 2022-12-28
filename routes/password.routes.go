@@ -45,13 +45,60 @@ func AddPassword(c *gin.Context) {
 	notes := c.PostForm("notes")
 	color := c.PostForm("color")
 	userId, err := strconv.Atoi(c.PostForm("userId"))
+	message := "Registered Succesfully"
 
-	newSecret := models.Secret{Name: name, URL: url, Username: username, Secret: secret, Notes: notes, Color: color, UserId: userId}
-	result := db.DB.Omit("updated_at", "deleted_at").Create(&newSecret)
+	if err != nil {
+		message = "Error during parsing"
+	} else {
+		newSecret := models.Secret{Name: name, URL: url, Username: username, Secret: secret, Notes: notes, Color: color, UserId: userId}
+		result := db.DB.Omit("updated_at", "deleted_at").Create(&newSecret)
 
-	fmt.Println(result, err)
+		if result.Error != nil {
+			message = "Error during insert"
+		}
+	}
 
 	c.JSON(200, gin.H{
-		"message": result,
+		"message": message,
+	})
+}
+
+func ModifyPassword(c *gin.Context) {
+
+	name := c.PostForm("name")
+	url := c.PostForm("url")
+	username := c.PostForm("username")
+	secret := c.PostForm("secret")
+	notes := c.PostForm("notes")
+	color := c.PostForm("color")
+	passId, err := strconv.Atoi(c.PostForm("passId"))
+	message := "Updated Succesfully"
+
+	if err != nil {
+		message = "Error during parsing"
+	} else {
+		updatedSecret := db.DB.Where("id = ?", passId).Updates(models.Secret{Name: name, URL: url, Username: username, Notes: notes, Secret: secret, Color: color})
+
+		fmt.Printf("%+v\n", updatedSecret)
+	}
+
+	c.JSON(200, gin.H{
+		"message": message,
+	})
+}
+
+func DeletePassword(c *gin.Context) {
+
+	passId := c.Param("passId")
+	message := "Deleted Succesfully"
+
+	deletedSecret := db.DB.Delete(&models.Secret{}, passId)
+
+	if deletedSecret.Error != nil {
+		message = "Error deleting"
+	}
+
+	c.JSON(200, gin.H{
+		"message": message,
 	})
 }

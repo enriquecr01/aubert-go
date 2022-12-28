@@ -27,6 +27,8 @@ func StartGin() {
 	router.GET("/password/search/:userid", routes.GetAllPasswords)
 	router.GET("/password/search/:userid/:term", routes.SearchPasswords)
 	router.POST("/password/add", routes.AddPassword)
+	router.PUT("/password/modify", routes.ModifyPassword)
+	router.DELETE("/password/delete/:passId", routes.DeletePassword)
 
 	port := os.Getenv("PORT")
 	fmt.Println("Port", os.Getenv("PORT"))
