@@ -35,11 +35,16 @@ func StartGin() {
 
 	router.GET("/", routes.HomeHandle)
 	router.GET("/example", routes.ExampleHandle)
+	// Password routes
 	router.GET("/password/search/:userid", routes.GetAllPasswords)
 	router.GET("/password/search/:userid/:term", routes.SearchPasswords)
 	router.POST("/password/add", routes.AddPassword)
 	router.PUT("/password/modify", routes.ModifyPassword)
 	router.DELETE("/password/delete/:passId", routes.DeletePassword)
+	// User routes
+	router.POST("/user/add", routes.AddUser)
+	router.PUT("/user/modify", routes.ModifyUser)
+	router.POST("/login", routes.Login)
 
 	port := os.Getenv("PORT")
 	fmt.Println("Port", os.Getenv("PORT"))
