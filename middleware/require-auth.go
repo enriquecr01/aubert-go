@@ -15,6 +15,14 @@ func RequireAuth(c *gin.Context) {
 
 	const BEARER_SCHEMA = "Bearer "
 	authHeader := c.GetHeader("Authorization")
+	if authHeader == "" {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+			"status":  1,
+			"message": "No Authorization token",
+		})
+		return
+	}
+
 	tokenString := authHeader[len(BEARER_SCHEMA):]
 	var user models.User
 
@@ -33,6 +41,7 @@ func RequireAuth(c *gin.Context) {
 			"message":      "Error decoding token",
 			"errorMessage": err,
 		})
+		return
 	}
 
 	// getting the claims
@@ -44,6 +53,7 @@ func RequireAuth(c *gin.Context) {
 			"status":  1,
 			"message": "Error getting claims",
 		})
+		return
 	}
 
 	where := "id = " + userId
@@ -60,12 +70,14 @@ func RequireAuth(c *gin.Context) {
 				"status":  1,
 				"message": "Error the token it's not the same",
 			})
+			return
 		}
 	} else {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 			"status":  1,
 			"message": "Error getting user",
 		})
+		return
 	}
 
 	//c.Next()
