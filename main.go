@@ -48,6 +48,12 @@ func StartGin() {
 	router.POST("/user/add", routes.AddUser)
 	router.PUT("/user/modify", routes.ModifyUser)
 	router.POST("/login", routes.Login)
+	// Note routes
+	router.GET("/note/search/:userid", middleware.RequireAuth, routes.GetAllNotes)
+	router.GET("/note/search/:userid/:term", middleware.RequireAuth, routes.SearchNotes)
+	router.POST("/note/add", middleware.RequireAuth, routes.AddNote)
+	router.PUT("/note/modify", middleware.RequireAuth, routes.ModifyNote)
+	router.DELETE("/note/delete/:noteId", middleware.RequireAuth, routes.DeleteNote)
 
 	port := os.Getenv("PORT")
 	fmt.Println("Port", os.Getenv("PORT"))
