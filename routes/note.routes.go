@@ -46,6 +46,7 @@ func AddNote(c *gin.Context) {
 	userId, err := strconv.Atoi(c.PostForm("userId"))
 	message := "Registered Succesfully"
 	status := 0
+	noteFormat := models.Note{}
 
 	if err != nil {
 		message = "Error during parsing"
@@ -53,6 +54,8 @@ func AddNote(c *gin.Context) {
 	} else {
 		newNote := models.Note{Title: title, Note: note, Color: color, UserId: userId}
 		result := db.DB.Omit("updated_at", "deleted_at").Create(&newNote)
+
+		noteFormat = newNote
 
 		if result.Error != nil {
 			status = 1
@@ -63,6 +66,7 @@ func AddNote(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"status":  status,
 		"message": message,
+		"note":    noteFormat,
 	})
 }
 
